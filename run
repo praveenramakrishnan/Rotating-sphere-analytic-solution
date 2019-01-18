@@ -1,0 +1,39 @@
+#! /bin/bash
+
+#Parameters
+mu_r=1.0
+epsilon_r=16.0
+Rsphere=1.0
+frequency=75.0e6
+beta=1e-4 #5.0e-3
+
+theta_i=0.7853981633974483
+Npoints=500
+
+filenamein=inparam.txt
+filename_points=name_of_the_file_of_points_along_circle_offset
+filenameout_Efield='E_along_xz_plane_mu_'$mu_r'_eps_'$epsilon_r'_thetai_'$theta_i'_beta_'$beta'_frequency'_$frequency'.txt'
+filenameout_Hfield='H_along_xz_plane_mu_'$mu_r'_eps_'$epsilon_r'_thetai_'$theta_i'_beta_'$beta'_frequency'_$frequency'.txt'
+
+
+#Compilation
+g++ -o main.o main.cpp -lgsl -lgslcblas -lm
+
+#Execution
+
+echo $mu_r > $filenamein
+echo $epsilon_r >> $filenamein
+echo $Rsphere >> $filenamein
+echo $frequency >> $filenamein
+echo $beta >> $filenamein
+echo $theta_i >> $filenamein
+
+echo $filename_points >> $filenamein
+echo $filenameout_Efield >> $filenamein
+echo $filenameout_Hfield >> $filenamein
+
+./main.o < $filenamein
+
+#Cleaning
+rm $filenamein
+rm main.o
